@@ -27,10 +27,16 @@ namespace LocalizationAndGlobalization
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //first step
+            services.AddMvc()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization(); //for data annotation validation based on localization
+            //second step
             services.AddLocalization(options =>
             {
                 options.ResourcesPath = "Resources";
             });
+            //third step
             services.Configure<RequestLocalizationOptions>(options =>
             {
                 var supportedCultures = new List<CultureInfo>
@@ -42,9 +48,7 @@ namespace LocalizationAndGlobalization
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
             });
-            services.AddMvc()
-                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization(); //for data annotation validation based on localization
+            
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
 
@@ -68,9 +72,12 @@ namespace LocalizationAndGlobalization
 
             app.UseAuthorization();
 
+            //fouth step
             app.UseRequestLocalization
                 (app.ApplicationServices
                 .GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
+
+            #region localization with query string
             //var supportedCultures = new[] { "en", "ar" };
             //var localizationOptions = new RequestLocalizationOptions()
             //    .SetDefaultCulture(supportedCultures[0])
@@ -78,7 +85,7 @@ namespace LocalizationAndGlobalization
             //    .AddSupportedUICultures(supportedCultures);
 
             //app.UseRequestLocalization(localizationOptions);
-
+            #endregion
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

@@ -26,13 +26,13 @@ namespace LocalizationAndGlobalization.Controllers
 
         public IActionResult Index()
         {
-            var test = _localizer["HelloWorld"];
-            ViewData["HelloWorld"]=test;
+            ViewData["HelloWorld"]= _localizer["HelloWorld"];
             return View();
         }
         [HttpPost]
-        public IActionResult CultureManagement(string culture,string returnUrl)
+        public IActionResult CultureManagement(string culture , string returnUrl)
         {
+            //manage culture by cookies
             Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
                              CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
                              new CookieOptions { Expires = DateTimeOffset.Now.AddDays(10) });
