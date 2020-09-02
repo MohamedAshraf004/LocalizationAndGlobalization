@@ -54,7 +54,7 @@ namespace LocalizationAndGlobalization
 
             app.UseAuthorization();
 
-            var supportedCultures = new[] { "en", "fr", "ar" };
+            var supportedCultures = new[] { "en", "ar" };
             var localizationOptions = new RequestLocalizationOptions()
                 .SetDefaultCulture(supportedCultures[0])
                 .AddSupportedCultures(supportedCultures)

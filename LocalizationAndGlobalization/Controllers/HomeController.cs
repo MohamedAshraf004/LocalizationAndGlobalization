@@ -6,20 +6,26 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using LocalizationAndGlobalization.Models;
+using Microsoft.AspNetCore.Mvc.Localization;
 
 namespace LocalizationAndGlobalization.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IHtmlLocalizer<HomeController> _localizer;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,
+                IHtmlLocalizer<HomeController> localizer)
         {
             _logger = logger;
+            this._localizer = localizer;
         }
 
         public IActionResult Index()
         {
+            var test = _localizer["HelloWorld"];
+            ViewData["HelloWorld"]=test;
             return View();
         }
 
