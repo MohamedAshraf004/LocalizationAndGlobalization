@@ -30,11 +30,16 @@ namespace LocalizationAndGlobalization.Controllers
             ViewData["HelloWorld"]=test;
             return View();
         }
-        public IActionResult CultureManagement(string culture)
+        [HttpPost]
+        public IActionResult CultureManagement(string culture,string returnUrl)
         {
             Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
                              CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
                              new CookieOptions { Expires = DateTimeOffset.Now.AddDays(10) });
+            if (returnUrl !=null)
+            {
+                return LocalRedirect(returnUrl);
+            }
             return RedirectToAction(nameof(Index));
         }
 
