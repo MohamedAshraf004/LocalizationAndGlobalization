@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using LocalizationAndGlobalization.Models;
 using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Http;
 
 namespace LocalizationAndGlobalization.Controllers
 {
@@ -27,6 +29,13 @@ namespace LocalizationAndGlobalization.Controllers
             var test = _localizer["HelloWorld"];
             ViewData["HelloWorld"]=test;
             return View();
+        }
+        public IActionResult CultureManagement(string culture)
+        {
+            Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
+                             CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                             new CookieOptions { Expires = DateTimeOffset.Now.AddDays(10) });
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Privacy()
