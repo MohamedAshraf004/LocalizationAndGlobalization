@@ -1,17 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace LocalizationAndGlobalization
 {
@@ -29,13 +25,13 @@ namespace LocalizationAndGlobalization
         {
             //first step
             services.AddMvc()
-                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix/*,options=>
+                //{
+                //    options.ResourcesPath = "Resources";
+                //}*/)
                 .AddDataAnnotationsLocalization(); //for data annotation validation based on localization
             //second step
-            services.AddLocalization(options =>
-            {
-                options.ResourcesPath = "Resources";
-            });
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
             //third step
             services.Configure<RequestLocalizationOptions>(options =>
             {
@@ -48,7 +44,7 @@ namespace LocalizationAndGlobalization
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
             });
-            
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
 
